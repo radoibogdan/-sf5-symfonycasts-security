@@ -6,6 +6,14 @@ $ symfony serve -d
 ```
 Lien pour accéder à l'interface: https://127.0.0.1:8000
 
+## Git 
+```bash
+$ git init
+$ git remote add origin https://github.com/radoibogdan/-sf5-symfonycasts-security.git
+$ git add .
+$ git commit -m "initial commit + create user"
+```
+
 ## Lignes jouées:
 ### Installer API et dépendances
 ```bash
@@ -16,10 +24,13 @@ $ symfony console doctrine:fixtures:load
 $ yarn install
 $ composer require security
 $ symfony console make:user
-$ git init
-$ git remote add origin https://github.com/radoibogdan/-sf5-symfonycasts-security.git
-$ git add .
-$ git commit -m "initial commit + create user"
+$ symfony console make:entity (add firstName property)
+$ symfony console make:migration
+$ symfony console d:m:m
+$ symfony console make:factory
+$ symfony console doctrine:fixtures:load
+$ symfony console doctrine:query:sql 'Select * FROM user'
+
 ```
 
 # Tests (pas sur ce projet)
