@@ -1,8 +1,12 @@
 security:
     enable_authenticator_manager: true
+    # Non recommandé, car ça peut aider un utilisateur malveillant à savoir si un email est présent sur le site
+    hide_user_not_found: false
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        App\Entity\User:
+            algorithm: auto
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         # used to reload user from session & other features (e.g. switch_user)
@@ -17,7 +21,14 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-
+            custom_authenticator: App\Security\LoginFormAuthenticator
+            # Active un listener pour la route /logout
+            # Toute la config possible au symfony console config:dump security
+            logout: true
+                # change la route pour la redirection apres logout
+                # target: /
+                # change la route du listerner pour le logout
+                # path: /logout
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
