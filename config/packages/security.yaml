@@ -29,6 +29,11 @@ security:
                 # target: /
                 # change la route du listerner pour le logout
                 # path: /logout
+
+            # Crée un cookie long session Remember me
+            remember_me:
+                secret: '%kernel.secret%'
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 

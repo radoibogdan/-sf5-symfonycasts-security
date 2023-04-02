@@ -13,6 +13,8 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\CustomCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
@@ -40,6 +42,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator
     {
         $email = $request->request->get('email');
         $password = $request->request->get('password');
+        $csrfToken = $request->request->get('_csrf_token');
 
         return new Passport(
             new UserBadge($email, function($userIdentifier) { // récupère le user
@@ -52,7 +55,15 @@ class LoginFormAuthenticator extends AbstractAuthenticator
 //            new CustomCredentials(function ($credentials, User $user) { // process thats proves who that this user is who they say they are
 //                return $credentials === '123456';
 //            }, $password) // password = credentials
-            new PasswordCredentials($password)
+            new PasswordCredentials($password),
+            # custom badges ici
+            [
+                new CsrfTokenBadge(
+                    'authenticate', # doit être pareil que celui utilisé dans le formulaire login.html.twig
+                    $csrfToken                # token depuis formulaire
+                ),
+                new RememberMeBadge()         # Sf regarde si un checbox avec name="_remember_me" existe
+            ]
         );
     }
 
