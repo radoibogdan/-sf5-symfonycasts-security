@@ -44,7 +44,7 @@ security:
             remember_me:
                 secret: '%kernel.secret%'
             # Crée un cookie long session Remember me automatiquement, on peut faire ceci aussi dans LoginFormAuthenticator
-            # always_remember_me: true
+                always_remember_me: true
 
             # Invalide automatiquement un remember_me cookie sur tous les pc connectés si le password change (utilie si on veut déconnecter qqn)
                 signature_properties: [password]
@@ -58,6 +58,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/admin/login, roles: PUBLIC_ACCESS } # renvoie true tous le temps
         - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

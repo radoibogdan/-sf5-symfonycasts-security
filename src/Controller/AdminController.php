@@ -54,4 +54,11 @@ class AdminController extends AbstractController
             'chart2' => $chart2,
         ]);
     }
+
+    /**
+     * @Route("/admin/login")
+     */
+    public function loginAdmin() {
+        return new Response('Page admin de login dispo pour tous');
+    }
 }
