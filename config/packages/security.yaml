@@ -21,7 +21,16 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-            custom_authenticator: App\Security\LoginFormAuthenticator
+            # entry_point: App\Security\LoginFormAuthenticator
+            entry_point: form_login
+            custom_authenticator:
+            #    - App\Security\LoginFormAuthenticator
+                - App\Security\DummyAuthenticator
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                username_parameter: email
+                password_parameter: password
             # Active un listener pour la route /logout
             # Toute la config possible au symfony console config:dump security
             logout: true
@@ -33,6 +42,11 @@ security:
             # Crée un cookie long session Remember me
             remember_me:
                 secret: '%kernel.secret%'
+            # Crée un cookie long session Remember me automatiquement, on peut faire ceci aussi dans LoginFormAuthenticator
+            # always_remember_me: true
+
+            # Invalide automatiquement un remember_me cookie sur tous les pc connectés si le password change (utilie si on veut déconnecter qqn)
+                signature_properties: [password]
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -43,7 +57,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_USER }
         # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:

@@ -13,6 +13,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
@@ -20,9 +21,13 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\CustomCre
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
+use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class LoginFormAuthenticator extends AbstractAuthenticator
+class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
+    use TargetPathTrait;
+
     private UserRepository $userRepository;
     private RouterInterface $router;
 
@@ -32,11 +37,11 @@ class LoginFormAuthenticator extends AbstractAuthenticator
         $this->router = $router;
     }
 
-    public function supports(Request $request): ?bool
-    {
-        // TODO: Implement supports() method.
-        return $request->getPathInfo() === '/login' && $request->getMethod() === 'POST';
-    }
+//    public function supports(Request $request): ?bool
+//    {
+//        // TODO: Implement supports() method.
+//        return $request->getPathInfo() === '/login' && $request->getMethod() === 'POST';
+//    }
 
     public function authenticate(Request $request): PassportInterface
     {
@@ -62,7 +67,9 @@ class LoginFormAuthenticator extends AbstractAuthenticator
                     'authenticate', # doit être pareil que celui utilisé dans le formulaire login.html.twig
                     $csrfToken                # token depuis formulaire
                 ),
-                new RememberMeBadge()         # Sf regarde si un checbox avec name="_remember_me" existe
+                # Sf regarde si un checbox avec name="_remember_me" existe
+                # enable => remember me auto pour tous les users, ne regarde plus les checkbox
+                (new RememberMeBadge())->enable()
             ]
         );
     }
@@ -72,27 +79,39 @@ class LoginFormAuthenticator extends AbstractAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        // Après Login rediriger vers la page initiale
+        if ($target = $this->getTargetPath($request->getSession(), $firewallName)) {
+            return new RedirectResponse($target);
+        }
+
         return new RedirectResponse(
             $this->router->generate('app_homepage')
         );
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
-    {
-        $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
-        return new RedirectResponse(
-            $this->router->generate('app_login')
-        );
-    }
+//    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
+//    {
+//        $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
+//        return new RedirectResponse(
+//            $this->router->generate('app_login')
+//        );
+//    }
 
+    /*
+     * Si un user n'est pas authentifié => redirige vers login
+     * For more details, see https://symfony.com/doc/current/security/experimental_authenticators.html#configuring-the-authentication-entry-point
+     */
 //    public function start(Request $request, AuthenticationException $authException = null): Response
 //    {
-//        /*
-//         * If you would like this class to control what happens when an anonymous user accesses a
-//         * protected page (e.g. redirect to /login), uncomment this method and make this class
-//         * implement Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface.
-//         *
-//         * For more details, see https://symfony.com/doc/current/security/experimental_authenticators.html#configuring-the-authentication-entry-point
-//         */
+//        return new RedirectResponse(
+//            $this->router->generate('app_login')
+//        );
 //    }
+
+    protected function getLoginUrl(Request $request): string
+    {
+        return $this->router->generate('app_login');
+    }
+
+
 }
