@@ -30,7 +30,11 @@ $ symfony console d:m:m
 $ symfony console make:factory
 $ symfony console doctrine:fixtures:load
 $ symfony console doctrine:query:sql 'Select * FROM user'
+```
 
+Pour le json des objets (voir UserController)
+```
+$ composer req serializer
 ```
 
 # Tests (pas sur ce projet)
