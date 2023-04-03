@@ -159,4 +159,28 @@ class User implements UserInterface
     {
         $this->plainPassword = $plainPassword;
     }
+
+    /**
+     * Dans twig on peut utiliser app.user.avatarUri ou app.user.getAvatarUri pour récupérer cette valeur
+     *
+     * @param int $size
+     * @return string
+     */
+    public function getAvatarUri(int $size = 32) :string
+    {
+        // https://ui-avatars.com/api/?name={{ app.user.firstName|url_encode }}&size=32&background=random
+        return 'https://ui-avatars.com/api/?' . http_build_query([
+                'name' => $this->getDisplayName(),
+                'size' => $size,
+                'background' => 'random',
+        ]);
+    }
+
+    /**
+     * Si le firsname n'existe pas, renvoi l'email
+     * @return string
+     */
+    public function getDisplayName(): string {
+        return $this->getFirstName() ?: $this->getEmail();
+    }
 }

@@ -34,7 +34,29 @@
                     </ul>
                     {# Tient compte du cookie remember me #}
                     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                        <a href="{{ path('app_logout') }}" class="nav-link text-black-50">Log Out</a>
+                        <div class="dropdown">
+                            <button
+                                    class="dropdown-toggle btn"
+                                    type="button"
+                                    id="user-dropdown"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                            >
+                                <img
+                                    {# voir User->getAvatarUri #}
+                                    src="{{ app.user.getAvatarUri }}"
+                                    alt="{{ app.user.getDisplayName }} Avatar">
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user-dropdown">
+                                <li>
+                                    <a class="dropdown-item" href="{{ path('app_logout') }}">Log Out</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <a class="nav-link text-black-50" href="{{ path('app_logout') }}">Log Out</a>
+{#                       {{ app.user.firstName }}#}
+{#                        <a href="{{ path('app_logout') }}" class="nav-link text-black-50">Log Out</a>#}
                     {% else %}
                         <a href="{{ path('app_login') }}" class="nav-link text-black-50">Log In</a>
                         <a href="#" class="btn btn-dark">Sign up</a>
