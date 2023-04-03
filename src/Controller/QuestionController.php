@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * On peut rajouter l'interdiction à toutes les routes du controlleur
  * Enlever les "" pour le faire fonctionner
  *
- * "@IsGranted("ROLE_ADMIN)"
+ * ### "@ IsGranted("ROLE_ADMIN")"
  */
 class QuestionController extends AbstractController
 {
@@ -53,7 +53,7 @@ class QuestionController extends AbstractController
     /**
      * Refuser l'accès en utilisant les annotations
      *
-     * @IsGranted("ROLE_ADMIN)
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/deny/annotations")
      */
     public function new2()

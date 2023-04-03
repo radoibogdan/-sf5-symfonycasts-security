@@ -46,7 +46,13 @@ class AppFixtures extends Fixture
         })->needsApproval()->many(20)->create();
 
         // Create one user with specific email + 10 users random
-        UserFactory::createOne(['email' => 'radoi.office@gmail.com']);
+        UserFactory::createOne([
+            'email' => 'radoi.office@gmail.com'
+        ]);
+        UserFactory::createOne([
+            'email' => 'admin@gmail.com',
+            'roles' => ['ROLE_ADMIN'],
+        ]);
         UserFactory::createMany(10);
 
         $manager->flush();

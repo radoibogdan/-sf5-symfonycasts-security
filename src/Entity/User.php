@@ -77,6 +77,7 @@ class User implements UserInterface
     }
 
     /**
+     * Appelée par Symfony après login pour détecter les rôles de l'utilisateur
      * @see UserInterface
      */
     public function getRoles(): array
