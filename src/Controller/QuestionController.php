@@ -10,11 +10,18 @@ use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Psr\Log\LoggerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * On peut rajouter l'interdiction à toutes les routes du controlleur
+ * Enlever les "" pour le faire fonctionner
+ *
+ * "@IsGranted("ROLE_ADMIN)"
+ */
 class QuestionController extends AbstractController
 {
     private $logger;
@@ -44,10 +51,31 @@ class QuestionController extends AbstractController
     }
 
     /**
+     * Refuser l'accès en utilisant les annotations
+     *
+     * @IsGranted("ROLE_ADMIN)
+     * @Route("/deny/annotations")
+     */
+    public function new2()
+    {
+
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('Accès interdit !');
+        }
+        return new Response("Refuser l'accès en utilisant les annotations");
+    }
+
+    /** Refuser l'accès en utilisant isGranted
      * @Route("/questions/new")
      */
     public function new()
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        # Version plus longue
+//        if (!$this->isGranted('ROLE_ADMIN')) {
+//            throw $this->createAccessDeniedException('Accès interdit !');
+//        }
         return new Response('Sounds like a GREAT feature for V2!');
     }
 
