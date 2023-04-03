@@ -8,6 +8,12 @@ security:
         App\Entity\User:
             algorithm: auto
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+
+    # Role hierarchy - Rajouter des roles/autisations à des ROLE
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_COMMENT_ADMIN, ROLE_USER_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_HUMAN_RESOURCES: [ROLE_USER_ADMIN]
+
     providers:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
@@ -22,6 +28,7 @@ security:
             lazy: true
             provider: app_user_provider
             # entry_point: App\Security\LoginFormAuthenticator
+            # Authenticator 1 (form_login)
             entry_point: form_login
             custom_authenticator:
             #    - App\Security\LoginFormAuthenticator
@@ -40,6 +47,7 @@ security:
                 # change la route du listerner pour le logout
                 # path: /logout
 
+            # Authenticator 2 (remember_me)
             # Crée un cookie long session Remember me
             remember_me:
                 secret: '%kernel.secret%'
@@ -48,6 +56,15 @@ security:
 
             # Invalide automatiquement un remember_me cookie sur tous les pc connectés si le password change (utilie si on veut déconnecter qqn)
                 signature_properties: [password]
+
+            # Authenticator 3 (switch_user)
+            # Impersonation - se connecter comme un certain user / rôle
+            # Le user doir avoir le rôle ROLE_ALLOWED_TO_SWITCH => voir role_hierarchy dans cette page
+            # Une fois connecté il aura le role ROLE_PREVIOUS_ADMIN => voir base.html.twig
+            # Se connecter   : https://127.0.0.1:8000?_switch_user=radoi.office@gmail.com
+            # Se déconnecter : https://127.0.0.1:8000?_switch_user=_exit
+            switch_user: true
+
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

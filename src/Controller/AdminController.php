@@ -61,4 +61,16 @@ class AdminController extends AbstractController
     public function loginAdmin() {
         return new Response('Page admin de login dispo pour tous');
     }
+
+    /**
+     * Page accessible pour les roles qui ont aussi le role ROLE_COMMENT_ADMIN
+     *
+     * Voir security.yaml
+     *
+     * @Route("/admin/answer")
+     */
+    public function roleAdminAnswer() {
+        $this->denyAccessUnlessGranted('ROLE_COMMENT_ADMIN');
+        return new Response('Page accessible pour les roles qui ont aussi le role ROLE_COMMENT_ADMIN');
+    }
 }
