@@ -35,15 +35,18 @@
                             {#Edit question button#}
                             <div class="d-flex justify-content-between">
                                 <h1 class="q-title-show">{{ question.name }}</h1>
-                                <a class="btn btn-secondary btn-sm mb-2" href="{{ path('app_question_edit', {'slug': question.slug}) }}">
-                                    Edit
-                                </a>
+                                {# Utiliser le voter QuestionVoter #}
+                                {% if is_granted('EDIT', question) %}
+                                    <a class="btn btn-secondary btn-sm mb-2" href="{{ path('app_question_edit', {'slug': question.slug}) }}">
+                                        Edit
+                                    </a>
+                                {% endif %}
                             </div>
 
                             <div class="q-display p-3">
                                 <i class="fa fa-quote-left mr-3"></i>
                                 <p class="d-inline">{{ question.question|parse_markdown }}</p>
-                                <p class="pt-4"><strong>--{{ question.owner.getDisplayName }}</strong></p>
+                                <p class="pt-4"><strong>--{{ question.owner.getDisplayName }} ({{ question.owner.email }})</strong></p>
                             </div>
                         </div>
                     </div>

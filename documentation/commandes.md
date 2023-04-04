@@ -63,6 +63,15 @@ services.yaml
         $formLoginAuthenticator: '@security.authenticator.form_login.main'
 ```
 
+# Make QuestionVoter - Autorise l'acces à certaines sections
+```bash
+symfony console make:voter
+```
+Voir fichiers:
+
+    Security/Voter
+    src/Controller/QuestionController.php
+    templates/question/show.html.twig
 
 
 
