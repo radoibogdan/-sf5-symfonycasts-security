@@ -33,9 +33,44 @@ $ symfony console doctrine:query:sql 'Select * FROM user'
 ```
 
 Pour le json des objets (voir UserController)
-```
+```bash
 $ composer req serializer
 ```
+
+# Registration form
+
+```bash
+$ composer require form validator
+$ symfony console make:registration-form
+```
+
+Configure the Symfony application to use Bootstrap 5 styles when rendering forms
+config/packages/twig.yaml  
+ [Symfony Bootstrap 5 doc][1]  
+```bash
+    twig:  
+        form_themes: ['bootstrap_5_layout.html.twig']
+```
+
+Pour l'auto enregistrement, modifie RegistrationController + services.yaml pour donner un alias a $formLoginAuthenticator
+```bash
+symfony console debug:container form_login
+```
+services.yaml
+```bash
+    bind:
+        bool $isDebug: '%kernel.debug%'
+        $formLoginAuthenticator: '@security.authenticator.form_login.main'
+```
+
+
+
+
+
+
+
+
+
 
 # Tests (pas sur ce projet)
 Jouer les tests (srs/tests):
@@ -44,4 +79,4 @@ Jouer les tests (srs/tests):
 $ php bin/phpunit
 ```
 
-
+[1]: https://symfony.com/doc/current/form/bootstrap5.html
