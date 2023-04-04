@@ -65,6 +65,11 @@ security:
             # Se déconnecter : https://127.0.0.1:8000?_switch_user=_exit
             switch_user: true
 
+            # Limiter le nb de tentatives de connexions via le formulaire de login
+            # Pour avoir que les options par défaut mettre login_throttling: true
+            login_throttling:
+                max_attempts: 1
+                interval: '5 minutes'
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

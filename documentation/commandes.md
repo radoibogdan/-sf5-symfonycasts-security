@@ -54,7 +54,7 @@ config/packages/twig.yaml
 
 Pour l'auto enregistrement, modifie RegistrationController + services.yaml pour donner un alias a $formLoginAuthenticator
 ```bash
-symfony console debug:container form_login
+$ symfony console debug:container form_login
 ```
 services.yaml
 ```bash
@@ -65,7 +65,7 @@ services.yaml
 
 # Make QuestionVoter - Autorise l'acces à certaines sections
 ```bash
-symfony console make:voter
+$ symfony console make:voter
 ```
 Voir fichiers:
 
@@ -76,10 +76,22 @@ Voir fichiers:
 # Vérifie l'email
 Crée route dans RegistrationController -> verify
 ```bash
-composer req symfonycasts/verify-email-bundle
+$ composer req symfonycasts/verify-email-bundle
 ```
 
+# Limiter le nb de tentatives de connexions via le formulaire de login
+Edit security.yaml  
+login_throttling: true
+```bash
+$ composer require symfony/rate-limiter
+voir options
+$ symfony console debug:config security
+login_throttling:
+    max_attempts: 5
+    interval: '1 minute'
+    lock_factory: null
 
+```
 
 
 
