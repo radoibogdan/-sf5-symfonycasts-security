@@ -46,7 +46,8 @@ final class UserFactory extends ModelFactory
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
             'email' => self::faker()->email(),
             'firstName' => self::faker()->firstName,
-            'plainPassword' => '123456' // on fait ça + le afterInstantiate() parce que on a besoin d'un User pour Hasher et on l'a pas en ce moment
+            'plainPassword' => '123456', // on fait ça + le afterInstantiate() parce que on a besoin d'un User pour Hasher et on l'a pas en ce moment
+            'isVerified' => true,
         ];
     }
 

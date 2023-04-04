@@ -73,7 +73,11 @@ Voir fichiers:
     src/Controller/QuestionController.php
     templates/question/show.html.twig
 
-
+# Vérifie l'email
+Crée route dans RegistrationController -> verify
+```bash
+composer req symfonycasts/verify-email-bundle
+```
 
 
 

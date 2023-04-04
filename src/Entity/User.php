@@ -59,6 +59,11 @@ class User implements UserInterface
      */
     private $questions;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVerified = false;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -229,6 +234,18 @@ class User implements UserInterface
                 $question->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsVerified(): ?bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }
