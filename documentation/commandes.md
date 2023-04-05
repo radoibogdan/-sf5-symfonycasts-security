@@ -93,8 +93,11 @@ login_throttling:
 
 ```
 
-
-
+# Events
+symfony console debug:event --dispatcher=security.event_dispatcher.main
+```bash
+Créer CheckVerifiedUserSubscriber
+```
 
 
 # Tests (pas sur ce projet)

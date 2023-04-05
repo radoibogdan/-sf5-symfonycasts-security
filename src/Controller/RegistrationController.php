@@ -7,6 +7,7 @@ use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -102,5 +103,30 @@ class RegistrationController extends AbstractController
 
         # Rediriger ou logger automatiquement le user comme dans la route "register"
         return $this->redirectToRoute('app_login');
+    }
+
+    /**
+     * @Route("/verify/resend", name="app_verify_resend_email")
+     */
+    public function resendVerifyEmail(VerifyEmailHelperInterface $verifyEmailHelper)
+    {
+        # TODO -- faire un formulaire dans le template, quand il est posté envoyer l'email avec le token
+        # $form = new Form();
+        # if ($form->isSubmitted() && $form->isValid()) {
+            # Envoi Email avec token comme dans la partie register
+            # Verify Email
+            # --- NE FONCTIONNE PAS ---
+            # $user = $this->getUser();
+            # $signatureComponents = $verifyEmailHelper->generateSignature(
+            #     'app_verify_email', # route name to the verification route
+            #     $user->getId(),               # used to generate token_url
+            #     $user->getEmail(),            # used to generate token_url
+            #     ['id' => $user->getId()]      # used to query for the user in app_verify_email
+            # );
+#
+            # // TODO: In a real app, send this as an email
+            # $this->addFlash('success', 'Confirm your email at '.$signatureComponents->getSignedUrl());
+        # }
+        return $this->render('registration/resend_verify_email.html.twig');
     }
 }

@@ -68,7 +68,7 @@ security:
             # Limiter le nb de tentatives de connexions via le formulaire de login
             # Pour avoir que les options par défaut mettre login_throttling: true
             login_throttling:
-                max_attempts: 1
+                max_attempts: 5
                 interval: '5 minutes'
 
             # activate different ways to authenticate
