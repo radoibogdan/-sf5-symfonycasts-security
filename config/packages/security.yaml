@@ -65,6 +65,11 @@ security:
             # Se déconnecter : https://127.0.0.1:8000?_switch_user=_exit
             switch_user: true
 
+            # Authenticator 4 (2factor authentication) + config access_control bellow
+            two_factor:
+                auth_form_path: 2fa_login    # The route name you have used in the routes.yaml
+                check_path: 2fa_login_check
+
             # Limiter le nb de tentatives de connexions via le formulaire de login
             # Pour avoir que les options par défaut mettre login_throttling: true
             login_throttling:
@@ -83,6 +88,13 @@ security:
         - { path: ^/admin/login, roles: PUBLIC_ACCESS } # renvoie true tous le temps
         - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+
+        # 2 Factor authentication config
+        # This makes the logout route accessible during two-factor authentication. Allows the user to
+        # cancel two-factor authentication, if they need to.
+        - { path: ^/logout, role: PUBLIC_ACCESS }
+          # This ensures that the form can only be accessed when two-factor authentication is in progress.
+        - { path: ^/2fa, role: IS_AUTHENTICATED_2FA_IN_PROGRESS }
 
 when@test:
     security:

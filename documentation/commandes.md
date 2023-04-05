@@ -69,7 +69,7 @@ $ symfony console make:voter
 ```
 Voir fichiers:
 
-    Security/Voter
+    Security/QuestionVoter
     src/Controller/QuestionController.php
     templates/question/show.html.twig
 
@@ -90,14 +90,34 @@ login_throttling:
     max_attempts: 5
     interval: '1 minute'
     lock_factory: null
-
 ```
 
 # Events
-symfony console debug:event --dispatcher=security.event_dispatcher.main
-```bash
 Créer CheckVerifiedUserSubscriber
+```bash
+$ symfony console debug:event --dispatcher=security.event_dispatcher.main
 ```
+
+# 2 Factor Authentification
+https://symfony.com/bundles/SchebTwoFactorBundle/current/installation.html
+https://symfony.com/bundles/SchebTwoFactorBundle/current/providers/totp.html
+```bash
+$ composer req 2fa
+$ composer req endroid/qr-code
+$ symfony console debug:config scheb_two_factor
+```
+## Etapes
+- Edit User Rajoute totpSecret property
+- Edit security.yaml et scheb_2fa.yaml
+- Créé twig templates : 
+  - security/enable2fa.html.twig 
+  - security/2fa_form.html.twig
+  - registration/resend_verify_email.html.twig
+- Créé routes 
+  - RegistrationController.php->app_verify_resend_email
+  - SecurityController.php
+    - app_2fa_authenticate
+    - app_qr_code
 
 
 # Tests (pas sur ce projet)
