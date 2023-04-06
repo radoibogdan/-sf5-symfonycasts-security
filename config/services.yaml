@@ -29,3 +29,7 @@ services:
     # please note that last definitions always *replace* previous ones
 
     Psr\Log\LoggerInterface $mdLogger: '@monolog.logger.markdown'
+
+    App\Service\MarkdownHelper:
+        arguments:
+            $isArgument: true

@@ -10,7 +10,6 @@ export default class extends Controller {
     clickVote(event) {
         event.preventDefault();
         const button = event.currentTarget;
-
         axios.post(this.urlValue, JSON.stringify({
             direction: button.value
         }))
